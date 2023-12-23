@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;
 
     private Vector2 playerMouseInput;
-    
+
+    private int items=0;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -43,5 +45,24 @@ public class PlayerController : MonoBehaviour
         float mouseXInput = Input.GetAxis("Mouse X");
       
         transform.Rotate(Vector3.up * mouseXInput * rotationSpeed * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Game over");
+           
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Item"))
+        {
+            Destroy(other.gameObject);
+            items++;
+            Debug.Log("Items found: " + items);
+        }
     }
 }
