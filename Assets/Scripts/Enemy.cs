@@ -14,12 +14,24 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float chaseDistance = 10f;
 
+    [SerializeField]
+    private Transform modelTransform;
+
+    [SerializeField]
+    private float walk_y_offset = 1.25f;
+
+    [SerializeField]
+    private float idle_y_offset = 1.15f;
+
+
     private Transform playerPos;
     private Vector3 randomPos;
     private float speedMovement;
     private string state;
     private Rigidbody enemyRb;
+    private Animator enemyAnim;
 
+    private int speedAnim = 0;
 
     private float idleStateTimer;
 
@@ -29,7 +41,13 @@ public class Enemy : MonoBehaviour
     private float z_rangeU = -47f;
     private float z_rangeD = +44f;
 
-    private float y_pos = 1f;
+    private float y_pos = 1.13f;
+
+    private void Awake()
+    {
+        enemyRb = GetComponent<Rigidbody>();
+        enemyAnim = GetComponentInChildren<Animator>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +55,11 @@ public class Enemy : MonoBehaviour
         speedMovement = 0;
         state = EnemyState.IDLE_STATE;
         idleStateTimer = Random.Range(0f, 10f);
+        playerPos = GameObject.Find("Player").GetComponent<Transform>();
+        enemyAnim.SetInteger("speed_int", 0);
 
         StartCoroutine(StartToMoveState(idleStateTimer));
-        playerPos = GameObject.Find("Player").GetComponent<Transform>();
-        enemyRb = GetComponent<Rigidbody>();
+       
     }
 
     // Update is called once per frame
@@ -56,7 +75,7 @@ public class Enemy : MonoBehaviour
                 state = EnemyState.CHASE_STATE;
           }
 
-        
+        modelTransform.localRotation = new Quaternion(0, 0, 0, 0);
        
     }
 
@@ -66,8 +85,11 @@ public class Enemy : MonoBehaviour
         if (state == EnemyState.WALK_STATE)
         {
             Vector3 direction = (randomPos - transform.position).normalized;
-            //  transform.Translate(direction * speedMovement * Time.deltaTime);
+            transform.LookAt(randomPos);
             enemyRb.velocity = direction * speedMovement;
+
+            enemyAnim.SetInteger("speed_int", 1);
+            transform.position = new Vector3(transform.position.x, walk_y_offset, transform.position.z);
 
             if (Vector3.Distance(transform.position, randomPos) < 0.5f)
                 StartIdleState();
@@ -78,6 +100,14 @@ public class Enemy : MonoBehaviour
             
             transform.LookAt(playerPos.position);
             enemyRb.velocity = transform.forward * chasingSpeed;
+
+            enemyAnim.SetInteger("speed_int", 2);
+
+        } else if(state == EnemyState.IDLE_STATE)
+        {
+            transform.rotation = new Quaternion(0f, transform.rotation.y, 0, transform.rotation.w);
+            transform.position = new Vector3(transform.position.x, idle_y_offset, transform.position.z);
+            enemyRb.velocity = Vector3.zero;
         }
 
 
@@ -97,6 +127,7 @@ public class Enemy : MonoBehaviour
         speedMovement = 0f;
         state = EnemyState.IDLE_STATE;
         idleStateTimer = Random.Range(0f, 25f);
+        enemyAnim.SetInteger("speed_int", 0);
         StartCoroutine(StartToMoveState(idleStateTimer));
     }
 
@@ -105,7 +136,7 @@ public class Enemy : MonoBehaviour
         float pos_X = Random.Range(x_rangeL, x_rangeR);
         float pos_Z = Random.Range(z_rangeU, z_rangeD);
 
-        return new Vector3(pos_X, y_pos, pos_Z);
+        return new Vector3(pos_X, transform.position.y, pos_Z);
     }
 
  

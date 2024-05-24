@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,7 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 5f;
 
+    [SerializeField]
+    private Transform modelTransform;
+
     private Rigidbody playerRb;
+    private Animator playerAnim;
 
     private Vector2 playerMouseInput;
 
@@ -20,6 +25,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        playerAnim = GetComponentInChildren<Animator>();
+
         Cursor.visible = false;
     }
 
@@ -29,15 +36,28 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         RotatePlayer();
 
+        modelTransform.localRotation = new Quaternion(0,0,0,0);
+
     }
 
     private void MovePlayer()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 localDirection = transform.TransformDirection(horizontalInput, 0f, verticalInput);
-        playerRb.velocity = localDirection * speed;
+        Vector3 localDirection = transform.TransformDirection(0f, 0f, verticalInput);
+        
+
+        if(verticalInput > 0)
+        {
+            playerRb.velocity = localDirection * speed;
+            playerAnim.SetInteger("speed_int", 1);
+
+        } else
+        {
+            playerRb.velocity = Vector3.zero;
+            playerAnim.SetInteger("speed_int", 0);
+        }
+
     }
 
     private void RotatePlayer()
@@ -51,9 +71,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Game over");
-           
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
         }
+        
     }
 
     private void OnTriggerEnter(Collider other)
