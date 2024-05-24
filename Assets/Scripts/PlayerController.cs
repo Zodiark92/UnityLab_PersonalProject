@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Vertical");
 
         Vector3 localDirection = transform.TransformDirection(0f, 0f, verticalInput);
+        modelTransform.localPosition = Vector3.zero;
         
 
         if(verticalInput > 0)

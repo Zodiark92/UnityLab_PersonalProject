@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Item
+  - Book
   layers:
   - Default
   - TransparentFX

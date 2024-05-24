@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] enemies;
 
     [SerializeField]
-    private GameObject item;
+    private GameObject[] books;
 
     public int initialEnemiesCount = 8;
     public int initialItemCount = 15;
@@ -46,8 +46,9 @@ public class SpawnManager : MonoBehaviour
         for(int i=0; i< initialItemCount; i++)
         {
             Vector3 randomPos = RandomPos();
+            int randomIndex = Random.Range(0, books.Length);
 
-            Instantiate(item, randomPos, item.transform.rotation);
+            Instantiate(books[randomIndex], randomPos, books[randomIndex].transform.rotation);
         }
     }
 
