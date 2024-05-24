@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1516141107397606159}
   - component: {fileID: 4204388858231615765}
   - component: {fileID: 5629264557634774469}
-  - component: {fileID: 4452374947200812057}
   - component: {fileID: 701124419681194574}
   - component: {fileID: 526847556753773043}
   m_Layer: 0
@@ -87,29 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &4452374947200812057
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862398976752988250}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &701124419681194574
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,8 +129,9 @@ MonoBehaviour:
   chasingSpeed: 15
   chaseDistance: 15
   modelTransform: {fileID: 7853166459425266202}
-  walk_y_offset: 1.17
-  idle_y_offset: 1.1
+  walk_y_offset: -0.043
+  idle_y_offset: 0
+  chase_y_offset: 0
 --- !u!1001 &7743574744853872113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,7 +158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f6ed8f840ec28840bf4c9a75a4649ba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.117
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f6ed8f840ec28840bf4c9a75a4649ba, type: 3}
       propertyPath: m_LocalPosition.z
@@ -223,6 +200,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e6edb56fd0fc61e49bdebc99afc20a2c, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 0f6ed8f840ec28840bf4c9a75a4649ba, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

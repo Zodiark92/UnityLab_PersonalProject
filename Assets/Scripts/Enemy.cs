@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float idle_y_offset = 1.15f;
 
+    [SerializeField]
+    private float chase_y_offset = 0f;
+
 
     private Transform playerPos;
     private Vector3 randomPos;
@@ -73,6 +76,7 @@ public class Enemy : MonoBehaviour
         if (Vector3.Distance(transform.position, playerPos.position) < chaseDistance)
           {
                 state = EnemyState.CHASE_STATE;
+                
           }
 
         modelTransform.localRotation = new Quaternion(0, 0, 0, 0);
@@ -89,16 +93,18 @@ public class Enemy : MonoBehaviour
             enemyRb.velocity = direction * speedMovement;
 
             enemyAnim.SetInteger("speed_int", 1);
+      
             transform.position = new Vector3(transform.position.x, walk_y_offset, transform.position.z);
-
+ 
             if (Vector3.Distance(transform.position, randomPos) < 0.5f)
                 StartIdleState();
 
         }
         else if (state == EnemyState.CHASE_STATE)
         {
-            
-            transform.LookAt(playerPos.position);
+            Vector3 lookDirection = new Vector3(playerPos.position.x, transform.position.y, playerPos.position.z);
+
+            transform.LookAt(lookDirection);
             enemyRb.velocity = transform.forward * chasingSpeed;
 
             enemyAnim.SetInteger("speed_int", 2);
@@ -106,8 +112,12 @@ public class Enemy : MonoBehaviour
         } else if(state == EnemyState.IDLE_STATE)
         {
             transform.rotation = new Quaternion(0f, transform.rotation.y, 0, transform.rotation.w);
-            transform.position = new Vector3(transform.position.x, idle_y_offset, transform.position.z);
             enemyRb.velocity = Vector3.zero;
+
+           transform.position = new Vector3(transform.position.x, idle_y_offset, transform.position.z);
+
+         //  modelTransform.localPosition = new Vector3(modelTransform.localPosition.x, 0f, modelTransform.localPosition.z);
+
         }
 
 
