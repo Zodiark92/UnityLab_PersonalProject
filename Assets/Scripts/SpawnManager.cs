@@ -14,13 +14,13 @@ public class SpawnManager : MonoBehaviour
     public int initialEnemiesCount = 8;
     public int initialItemCount = 15;
 
-    private float x_rangeL = -47f;
-    private float x_rangeR = 47f;
+    private float x_rangeL = -66.4f;
+    private float x_rangeR = 84.94f;
 
-    private float z_rangeU = -47f;
-    private float z_rangeD = +44f;
+    private float z_rangeU = -72f;
+    private float z_rangeD = +14f;
 
-    private float y_pos = 1f;
+    private float y_pos = 1.2f;
 
     void Start()
     {
