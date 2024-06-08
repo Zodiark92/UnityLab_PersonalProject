@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
     private string state;
     private Rigidbody enemyRb;
     private Animator enemyAnim;
+    private GameManager gameManager;
 
     private int speedAnim = 0;
 
@@ -50,6 +51,7 @@ public class Enemy : MonoBehaviour
     {
         enemyRb = GetComponent<Rigidbody>();
         enemyAnim = GetComponentInChildren<Animator>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Start is called before the first frame update
@@ -71,13 +73,14 @@ public class Enemy : MonoBehaviour
         if(playerPos == null)
            return;
 
+       
         EnemyAI();
         
-        if (Vector3.Distance(transform.position, playerPos.position) < chaseDistance)
-          {
+        if ((Vector3.Distance(transform.position, playerPos.position) < chaseDistance))
+        {
                 state = EnemyState.CHASE_STATE;
                 
-          }
+        } 
 
         modelTransform.localRotation = new Quaternion(0, 0, 0, 0);
        
@@ -127,9 +130,14 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(timer);
 
-        state = EnemyState.WALK_STATE;
-        speedMovement = walkSpeed;
-        randomPos = RandomPos();
+        if (!gameManager.isGameOver)
+        {
+            state = EnemyState.WALK_STATE;
+            speedMovement = walkSpeed;
+            randomPos = RandomPos();
+
+        }
+       
     }
 
     private void StartIdleState()

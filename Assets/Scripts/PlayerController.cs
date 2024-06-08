@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody playerRb;
     private Animator playerAnim;
+    private GameManager gameManager;
 
     private Vector2 playerMouseInput;
 
@@ -26,15 +27,27 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponentInChildren<Animator>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        Cursor.visible = false;
+        if(!gameManager.isGameOver)
+            Cursor.visible = false;
+
+        playerAnim.SetInteger("speed_int", 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        MovePlayer();
-        RotatePlayer();
+        if (!gameManager.isGameOver)
+        {
+            MovePlayer();
+            RotatePlayer();
+        } else
+        {
+            playerRb.velocity = Vector3.zero;
+            playerAnim.SetInteger("speed_int", 0);
+        }
+       
 
         modelTransform.localRotation = new Quaternion(0,0,0,0);
 
@@ -72,8 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
+            gameManager.GameOver();
         }
         
     }
@@ -85,6 +97,13 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             items++;
             Debug.Log("Items found: " + items);
+            Debug.Log((GameObject.FindGameObjectsWithTag("Item").Length));
+
+        }
+
+        if(GameObject.FindGameObjectsWithTag("Item").Length == 1)
+        {
+            gameManager.GameWin();
         }
     }
 }
