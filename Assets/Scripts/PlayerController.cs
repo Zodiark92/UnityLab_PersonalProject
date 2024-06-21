@@ -14,9 +14,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform modelTransform;
 
+    [SerializeField]
+    private AudioClip bookPickUpSound;
+
+    [SerializeField]
+    private AudioClip enemySound;
+
+    [SerializeField]
+    private AudioClip winSound;
+
     private Rigidbody playerRb;
     private Animator playerAnim;
     private GameManager gameManager;
+    private AudioSource audioSource;
 
     private Vector2 playerMouseInput;
 
@@ -28,17 +38,17 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponentInChildren<Animator>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        audioSource = GetComponent<AudioSource>();
 
-        if(!gameManager.isGameOver)
+        if(!gameManager.isGameOver && gameManager.isGameStarted)
             Cursor.visible = false;
 
-        playerAnim.SetInteger("speed_int", 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameManager.isGameOver)
+        if (!gameManager.isGameOver && gameManager.isGameStarted)
         {
             MovePlayer();
             RotatePlayer();
@@ -85,6 +95,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            audioSource.PlayOneShot(enemySound);
             gameManager.GameOver();
         }
         
@@ -97,12 +108,15 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             items++;
             Debug.Log("Items found: " + items);
-            Debug.Log((GameObject.FindGameObjectsWithTag("Item").Length));
+
+            audioSource.PlayOneShot(bookPickUpSound);
+            gameManager.UpdateBooksFound();
 
         }
 
         if(GameObject.FindGameObjectsWithTag("Item").Length == 1)
         {
+            audioSource.PlayOneShot(winSound); 
             gameManager.GameWin();
         }
     }

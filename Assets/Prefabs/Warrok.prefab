@@ -130,8 +130,8 @@ MonoBehaviour:
   chasingSpeed: 15
   chaseDistance: 12
   modelTransform: {fileID: 2606589669795605189}
-  walk_y_offset: -0.28
-  idle_y_offset: -0.128
+  walk_y_offset: 0.192
+  idle_y_offset: 0.1
   chase_y_offset: 0
 --- !u!114 &6734430418397040031
 MonoBehaviour:

@@ -131,7 +131,7 @@ MonoBehaviour:
   chaseDistance: 10
   modelTransform: {fileID: 1511736745587650532}
   walk_y_offset: 0.38
-  idle_y_offset: 0
+  idle_y_offset: 0.2
   chase_y_offset: 0
 --- !u!114 &5621027304659420416
 MonoBehaviour:
@@ -251,6 +251,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.23
-  m_Height: 1.574008
+  m_Height: 1.3779484
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9929958, z: 0}
+  m_Center: {x: 0, y: 1.0910256, z: 0}

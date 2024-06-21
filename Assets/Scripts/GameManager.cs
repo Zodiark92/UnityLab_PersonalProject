@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,8 +13,23 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject winScreen;
 
+    [HideInInspector]
+    public bool isGameStarted;
+
     [SerializeField]
     private GameObject gameOverScreen;
+
+    [SerializeField]
+    private GameObject mainMenu;
+
+    [SerializeField]
+    private GameObject UIScreen;
+
+    [SerializeField]
+    private TextMeshProUGUI booksText;
+
+    private int totalBooks;
+    private int booksFound;
 
     [HideInInspector]
     public bool isGameOver;
@@ -21,13 +37,27 @@ public class GameManager : MonoBehaviour
     private GameObject player;
 
 
-    private void Start()
+    private void Awake()
     {
         Time.timeScale = 1f;
-        player = GameObject.Find("Player");
+        Cursor.visible = true;
 
+        isGameOver = false;
+        isGameStarted = false;
+    }
+
+    private void Start()
+    {
+       
+        player = GameObject.Find("Player");
+        totalBooks = GameObject.Find("SpawnManager").GetComponent<SpawnManager>().initialItemCount;
+        booksFound = 0;
+        booksText.text = booksFound + "/" + totalBooks;
+       
         winScreen.SetActive(false);
         gameOverScreen.SetActive(false);
+        mainMenu.SetActive(true);
+        UIScreen.SetActive(false);
 
     }
 
@@ -39,6 +69,7 @@ public class GameManager : MonoBehaviour
     public void ShowVictory()
     {
         winScreen.SetActive(true);
+        Cursor.visible = true;
         isGameOver = true;
     }
 
@@ -56,5 +87,21 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0;
 
+    }
+
+    public void GameStart()
+    {
+        isGameStarted = true;
+        Cursor.visible = false;
+
+        mainMenu.SetActive(false);
+        UIScreen.SetActive(true);
+        
+    }
+
+    public void UpdateBooksFound()
+    {
+        booksFound++;
+        booksText.text = booksFound + "/" + totalBooks;
     }
 }

@@ -13,7 +13,10 @@ public class WinWall : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        gameManager.ShowVictory();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            gameManager.ShowVictory();
+        }
+      
     }
-
 }

@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerPos == null)
+        if(playerPos == null && !gameManager.isGameStarted)
            return;
 
        
@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
         float pos_X = Random.Range(x_rangeL, x_rangeR);
         float pos_Z = Random.Range(z_rangeU, z_rangeD);
 
-        return new Vector3(pos_X, transform.position.y, pos_Z);
+        return new Vector3(pos_X, transform.position.y + idle_y_offset, pos_Z);
     }
 
  
